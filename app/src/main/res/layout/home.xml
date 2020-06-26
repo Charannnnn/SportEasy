@@ -7,18 +7,19 @@
     android:background="#EEF8F7"
     tools:context=".Home"
     android:backgroundTint="#ffffff">
-    <!--    <ImageView-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:src="@drawable/background_3"-->
-    <!--        android:scaleType="centerCrop">-->
-    <!--    </ImageView>-->
-    <!--    <ImageView-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:src="#7A474747">-->
-    <!--    </ImageView>-->
 
+    <ImageView
+        android:id="@+id/refreshButton"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_baseline_refresh_24"
+        app:layout_constraintBottom_toTopOf="@+id/bookedlist"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.875"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45" />
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -78,11 +79,11 @@
                 android:layout_height="60dp"
                 android:paddingTop="10sp"
                 android:text=""
-                android:textSize="25dp"
-                android:typeface="serif"
                 android:textAlignment="center"
                 android:textColor="@color/layoutbg"
-                android:textStyle="bold">
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:typeface="serif">
 
             </TextView>
 
@@ -100,11 +101,10 @@
                 android:id="@+id/optionE2"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:textSize="18dp"
-                android:textColor="@android:color/white"
                 android:background="@drawable/lay_bg"
-                android:text="Not Returned">
-            </Button>
+                android:text="Not Returned"
+                android:textColor="@android:color/white"
+                android:textSize="18dp"></Button>
         </LinearLayout>
     </LinearLayout>
 

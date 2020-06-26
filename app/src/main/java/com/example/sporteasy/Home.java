@@ -1,8 +1,10 @@
 package com.example.sporteasy;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -10,6 +12,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
@@ -41,9 +44,10 @@ public class Home extends AppCompatActivity {
 
    static JSONObject user_id;
    LinearLayout bookedlist, availablelist, bookedE2;
-   TextView bookedmsg;
+   TextView bookedmsg,text3,text5;
+   ImageView refreshButton;
    Button optionE2;
-   Boolean booked;
+   Boolean booked, hasFine;
    BookedResource userBookedData;
 
 
@@ -83,7 +87,10 @@ public class Home extends AppCompatActivity {
         availablelist = (LinearLayout) findViewById(R.id.availablelist);
         bookedE2 = (LinearLayout) findViewById(R.id.bookedE2);
         bookedmsg = (TextView) findViewById(R.id.bookedmsg);
+        text3 = (TextView) findViewById(R.id.textView3);
+        text5 = (TextView) findViewById(R.id.textView5);
         optionE2 = (Button) findViewById(R.id.optionE2);
+        refreshButton = (ImageView) findViewById(R.id.refreshButton);
         user_id= new JSONObject();
 
         try {
@@ -92,10 +99,32 @@ public class Home extends AppCompatActivity {
             e.printStackTrace();
         }
 
+//        SimpleDateFormat sd = new SimpleDateFormat("HH:mm:ss");
+//        String time = sd.format(new Date());
+//        if ((("11:40:00".compareTo(time)) < 0) && (("15:00:00".compareTo(time)) >0)) {
+//
+//            TodayBookingData();
+//
+//        }
+//        else {
+//            text5.setText("");
+//            text3.setText("");
+//            bookedmsg.setText("Bookings available from 11:40 AM to 03:00 PM only");
+//            bookedmsg.setTextSize(18);
+//        }
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TodayBookingData();
+            }
+        });
+
+        TodayBookingData();
+
 
         bookedE2.setVisibility(View.INVISIBLE);
 
-        TodayBookingData();
+
 
 
 
@@ -297,8 +326,26 @@ public class Home extends AppCompatActivity {
 
         Button bookbtn = new Button(this);
         bookbtn.setText("Book");
-        if (booked){
-            bookbtn.setEnabled(false);
+        try {
+            hasFine = (((LoginActivity.userData.getString("fine")).compareTo("0")) > 0 );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (booked ){
+            bookbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ShowAlert(1);
+                }
+            });
+        }
+        else if (hasFine){
+            bookbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ShowAlert(2);
+                }
+            });
         }
         else{
             bookbtn.setOnClickListener(new View.OnClickListener() {
@@ -323,6 +370,36 @@ public class Home extends AppCompatActivity {
         availablelist.addView(space, 0, 60);
         availablelist.setPadding(50, 0, 50, 0);
 
+    }
+
+    private void ShowAlert(int i) {
+        if (i ==1) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(Home.this);
+            builder.setMessage("You have a booking today");
+            builder.setTitle("Booking Failed");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            AlertDialog bookingFailDialog = builder.create();
+            bookingFailDialog.show();
+
+        }
+        else if (i==2){
+            AlertDialog.Builder builder = new AlertDialog.Builder(Home.this);
+            builder.setMessage("You have a fine.");
+            builder.setTitle("Booking Failed");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            AlertDialog bookingFailDialog = builder.create();
+            bookingFailDialog.show();
+        }
     }
 
     private void book(final String sroll, final String resourceName){

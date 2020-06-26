@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Sport Easy</string>
+    <string name="app_name">SportEasy</string>
+    <string name="dialog_title">Booking Failed</string>
+    <string name="dialog_message_1">You already have a booking</string>
+    <string name="dialog_message_2">You have a fine.</string>
+
+
 </resources>

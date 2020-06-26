@@ -78,22 +78,17 @@ public class History extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         int len = response.length();
-                        if (len == 0){
-                            Alert();
-                        }
-                        else {
-                            for (int i = 0; i < len; i++) {
-                                try {
-                                    if (response.getJSONObject(i).getString("user_id").trim().equals(LoginActivity.sroll)) {
-                                        add(bookedhistorylist,
-                                                response.getJSONObject(i).getString("resource_name"),
-                                                response.getJSONObject(i).getString("day"),
-                                                response.getJSONObject(i).getString("status"),
-                                                response.getJSONObject(i).getString("return_time").toString());
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                        for (int i = 0; i<len; i++){
+                            try{
+                                if (response.getJSONObject(i).getString("user_id").trim().equals(LoginActivity.sroll)){
+                                    add(bookedhistorylist,
+                                            response.getJSONObject(i).getString("resource_name"),
+                                            response.getJSONObject(i).getString("day"),
+                                            response.getJSONObject(i).getString("status"),
+                                            response.getJSONObject(i).getString("return_time").toString());
                                 }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
                         }
 
@@ -102,7 +97,7 @@ public class History extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        Alert();
                     }
                 }){
             @Override

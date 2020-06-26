@@ -6,10 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.json.JSONException;
+
 public class Account extends AppCompatActivity {
+    TextView name,roll,fine;
+    Button changePassword, logOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,5 +46,28 @@ public class Account extends AppCompatActivity {
                 return false;
             }
         });
+
+        name = (TextView) findViewById(R.id.name);
+        roll = (TextView) findViewById(R.id.roll);
+        fine = (TextView) findViewById(R.id.fine);
+        changePassword = (Button) findViewById(R.id.changePassword);
+        logOut = (Button) findViewById(R.id.logout);
+
+        try {
+            name.setText("Name: " + LoginActivity.userData.getString("name"));
+            roll.setText("Roll Number: " + LoginActivity.userData.getString("id"));
+            fine.setText("Fine: " + LoginActivity.userData.getString("fine"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Account.this, LoginActivity.class));
+            }
+        });
+
+
     }
 }
