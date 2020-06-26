@@ -136,6 +136,9 @@ public class Home extends AppCompatActivity {
                             bookedE2.setVisibility(View.INVISIBLE);
                             bookedmsg.setText("You have already booked a resource !");
                         }
+                        if (availablelist.getChildCount()>0){
+                            availablelist.removeAllViews();
+                        }
                         DisplayResources();
 
 
@@ -152,7 +155,10 @@ public class Home extends AppCompatActivity {
                         booked = false;
                         bookedmsg.setText("No Bookings");
                         bookedE2.setVisibility(View.INVISIBLE);
-                        bookedmsg.setTextSize(25);
+                        bookedmsg.setTextSize(20);
+                        if (availablelist.getChildCount()>0){
+                            availablelist.removeAllViews();
+                        }
                         DisplayResources();
 
 
@@ -260,6 +266,7 @@ public class Home extends AppCompatActivity {
     }
 
     private void add(LinearLayout availablelist, final Resource unit) {
+
 
         String r = unit.getResourceName();
         String c = "Count: " + unit.getResourcesAvailable().toString() + "/" + unit.getCount().toString();
