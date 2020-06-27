@@ -12,12 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Account"></activity>
-        <activity android:name=".History"/>
+        <activity android:name=".Change_Password"></activity>
+        <activity android:name=".Forgot_Password" />
+        <activity android:name=".Account" />
+        <activity android:name=".History" />
         <activity android:name=".Home" />
-        <activity android:name=".LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".SplashScreen"
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SplashScreen"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

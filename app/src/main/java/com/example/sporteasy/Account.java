@@ -22,6 +22,7 @@ public class Account extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
+        changePassword = findViewById(R.id.changePassword);
 
         //Initialize and Assign
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -54,9 +55,9 @@ public class Account extends AppCompatActivity {
         logOut = (Button) findViewById(R.id.logout);
 
         try {
-            name.setText("Name: " + LoginActivity.userData.getString("name"));
-            roll.setText("Roll Number: " + LoginActivity.userData.getString("id"));
-            fine.setText("Fine: " + LoginActivity.userData.getString("fine"));
+            name.setText("Name : " + LoginActivity.userData.getString("name"));
+            roll.setText("Roll Number : " + LoginActivity.userData.getString("id"));
+            fine.setText("Fine : " + LoginActivity.userData.getString("fine"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -68,6 +69,18 @@ public class Account extends AppCompatActivity {
             }
         });
 
+
+        changePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openChange_Password();
+            }
+        });
+    }
+
+    private void openChange_Password() {
+        Intent intent = new Intent(this,Change_Password.class);
+        startActivity(intent);
 
     }
 }

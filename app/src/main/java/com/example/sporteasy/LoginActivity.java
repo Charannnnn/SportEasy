@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -32,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     static JSONObject userData;
     EditText roll,pwd;
     static String sroll;
+    TextView forgot_pwd;
     String spwd, URL = "https://sport-resources-booking-api.herokuapp.com/login";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,17 +41,18 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
-        Button logbtn = (Button) findViewById(R.id.logbtn);
-        roll=(EditText) findViewById(R.id.roll);
-        pwd=(EditText) findViewById(R.id.pwd);
+        forgot_pwd = findViewById(R.id.forgot_pwd);
+        Button logbtn =  findViewById(R.id.logbtn);
+        roll =  findViewById(R.id.roll);
+        pwd =  findViewById(R.id.pwd);
         queue = Volley.newRequestQueue(this);
 
 
         logbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sroll=roll.getText().toString();
-                spwd=pwd.getText().toString();
+                sroll = roll.getText().toString();
+                spwd = pwd.getText().toString();
                 data = new JSONObject();
                 try {
                     data.put("id",sroll);
@@ -75,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Toast toast = Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_LONG);
+                                Toast toast = Toast.makeText(getApplicationContext(),"Enter Valid Credentials",Toast.LENGTH_LONG);
                                 toast.show();
                             }
                         });
@@ -85,7 +88,13 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-    };
+        forgot_pwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity6();
+            }
+        });
+    }
 
     private void GetUserData() {
         RequestQueue uqueue;
@@ -135,6 +144,11 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, Home.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    private  void openActivity6() {
+        Intent intent = new Intent(this,Forgot_Password.class);
         startActivity(intent);
     }
 

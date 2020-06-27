@@ -308,7 +308,7 @@ public class Home extends AppCompatActivity {
         LinearLayout resourceE1 = new LinearLayout(this);
         resourceE1.setOrientation(LinearLayout.VERTICAL);
         resourceE1.setPadding(40, 30, 0, 20);
-        //resourceE1.setMinimumWidth(550);
+        resourceE1.setMinimumWidth(500);
 
         LinearLayout resourceE2 = new LinearLayout(this);
         resourceE2.setPadding(0, 40, 30, 40);
