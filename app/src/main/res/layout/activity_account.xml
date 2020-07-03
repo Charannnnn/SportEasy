@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Account">
+    tools:context=".Account"
+    android:id="@+id/account_layout">
 
 
     <TextView
@@ -45,7 +46,7 @@
             <ImageView
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:src="@drawable/ic_baseline_perm_identity_24" />
+                android:src="@drawable/ic_baseline_person_24" />
 
             <Space
                 android:layout_width="match_parent"
@@ -62,8 +63,8 @@
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Name: Koppula Sai Charan"
                 android:textColor="@android:color/white"
+                android:textStyle="bold"
                 android:textSize="24sp"
                 android:typeface="serif" />
         </LinearLayout>
@@ -72,8 +73,9 @@
             android:id="@+id/roll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Roll: 160119733103"
+
             android:textColor="@android:color/white"
+            android:textStyle="bold"
             android:textSize="24sp"
             android:typeface="serif" />
 
@@ -81,8 +83,9 @@
             android:id="@+id/fine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Fine: "
-            android:textColor="@android:color/white"
+
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
             android:textSize="24sp"
             android:typeface="serif" />
     </LinearLayout>

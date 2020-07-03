@@ -68,7 +68,8 @@ public class LoginActivity extends AppCompatActivity {
                             public void onResponse(JSONObject response) {
                                 try {
                                     accessTkn = response.getString("access_token");
-                                    GetUserData();
+                                    //GetUserData();
+                                    openActivity2();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -114,14 +115,14 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         userData = response;
-                       openActivity2();
+                       //openActivity2();
 
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(LoginActivity.this, "Failed to login contact administrator", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(LoginActivity.this, "Failed to login contact administrator", Toast.LENGTH_SHORT).show();
                     }
                 }) {
             @Override

@@ -188,6 +188,7 @@ public class History extends AppCompatActivity {
         }
 
         bookedE1.addView(tvResourse);
+        bookedE1.setMinimumWidth(500);
         bookedE1.addView(tvDate);
         bookedE2.addView(returnbtn);
         bookedset.addView(bookedE1);

@@ -25,21 +25,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Change_Password extends AppCompatActivity {
-    EditText roll;
+    EditText cnewpwd;
     EditText oldpwd;
     EditText newpwd;
     Button submit;
     JsonObjectRequest changepwdrequest;
     private RequestQueue queueD;
     JSONObject change_pwd;
-    String id, pwd0, pwd1;
+    String id, pwd0, pwd1,pwd2;
     TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change__password);
-        roll = findViewById(R.id.roll);
+        cnewpwd = findViewById(R.id.cnewpwd);
         oldpwd = findViewById(R.id.oldpwd);
         newpwd = findViewById(R.id.newpwd);
         submit = findViewById(R.id.submit);
@@ -51,55 +51,135 @@ public class Change_Password extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                id = roll.getText().toString();
-                pwd0 = oldpwd.getText().toString();
-                pwd1 = newpwd.getText().toString();
-
                 try {
-                    change_pwd.put("id", id);
-                    change_pwd.put("password", pwd0);
-                    change_pwd.put("new_password", pwd1);
-
+                    id = LoginActivity.userData.getString("id");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                pwd0 = oldpwd.getText().toString();
+                pwd1 = newpwd.getText().toString();
+                pwd2 = cnewpwd.getText().toString();
+                try {
+                    if (LoginActivity.userData.getString("password").equals(pwd0.trim())) {
+                        if (pwd1.trim().equals(pwd2.trim())) {
+                            try {
+                                change_pwd.put("id", id);
+                                change_pwd.put("password", pwd0);
+                                change_pwd.put("new_password", pwd1);
 
-                String URLD = "https://sport-resources-booking-api.herokuapp.com/changePassword";
-
-                changepwdrequest = new JsonObjectRequest(Request.Method.POST,
-                        URLD,
-                        change_pwd,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                // toast = new Toast(getApplicationContext(), "Password changed successfully", Toast.LENGTH_LONG);
-                                Toast.makeText(Change_Password.this, "Password changed successfully", Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
 
-                            }
-                        }) {
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("Authorization", "Bearer " + LoginActivity.accessTkn);
-                        return params;
+
+                            String URLD = "https://sport-resources-booking-api.herokuapp.com/changePassword";
+
+                            changepwdrequest = new JsonObjectRequest(Request.Method.POST,
+                                    URLD,
+                                    change_pwd,
+                                    new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+                                            // toast = new Toast(getApplicationContext(), "Password changed successfully", Toast.LENGTH_LONG);
+                                            Toast.makeText(Change_Password.this, "Password changed successfully", Toast.LENGTH_SHORT).show();
+                                        }
+                                    },
+                                    new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+
+                                        }
+                                    }) {
+                                @Override
+                                public Map<String, String> getHeaders() throws AuthFailureError {
+                                    Map<String, String> params = new HashMap<String, String>();
+                                    params.put("Authorization", "Bearer " + LoginActivity.accessTkn);
+                                    return params;
+                                }
+
+                                @Override
+                                public Map<String, String> getParams() {
+                                    Map<String, String> params = new HashMap<>();
+                                    params.put("id", id);
+                                    return params;
+                                }
+                            };
+                            queueD.add(changepwdrequest);
+
+                            gotohome();
+                        }
+                        else {
+                            Toast.makeText(Change_Password.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+
+                        }
+
+
+
+                        }
+                    else {
+                        Toast.makeText(Change_Password.this, "Your current password does not match", Toast.LENGTH_SHORT).show();
                     }
-
-                    @Override
-                    public Map<String, String> getParams() {
-                        Map<String, String> params = new HashMap<>();
-                        params.put("id", id);
-                        return params;
                     }
-                };
-                queueD.add(changepwdrequest);
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+    //                try {
+    //                    id = LoginActivity.userData.getString("id");
+    //                } catch (JSONException e) {
+    //                    e.printStackTrace();
+    //                }
+    //                pwd0 = oldpwd.getText().toString();
+    //                pwd1 = newpwd.getText().toString();
 
-                gotohome();
+//                    try {
+//                        change_pwd.put("id", id);
+//                        change_pwd.put("password", pwd0);
+//                        change_pwd.put("new_password", pwd1);
+//
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                String URLD = "https://sport-resources-booking-api.herokuapp.com/changePassword";
+//
+//                changepwdrequest = new JsonObjectRequest(Request.Method.POST,
+//                        URLD,
+//                        change_pwd,
+//                        new Response.Listener<JSONObject>() {
+//                            @Override
+//                            public void onResponse(JSONObject response) {
+//                                // toast = new Toast(getApplicationContext(), "Password changed successfully", Toast.LENGTH_LONG);
+//                                Toast.makeText(Change_Password.this, "Password changed successfully", Toast.LENGTH_SHORT).show();
+//                            }
+//                        },
+//                        new Response.ErrorListener() {
+//                            @Override
+//                            public void onErrorResponse(VolleyError error) {
+//                                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+//
+//                            }
+//                        }) {
+//                    @Override
+//                    public Map<String, String> getHeaders() throws AuthFailureError {
+//                        Map<String, String> params = new HashMap<String, String>();
+//                        params.put("Authorization", "Bearer " + LoginActivity.accessTkn);
+//                        return params;
+//                    }
+//
+//                    @Override
+//                    public Map<String, String> getParams() {
+//                        Map<String, String> params = new HashMap<>();
+//                        params.put("id", id);
+//                        return params;
+//                    }
+//                };
+//                queueD.add(changepwdrequest);
+//
+//                gotohome();
 
             }
         });

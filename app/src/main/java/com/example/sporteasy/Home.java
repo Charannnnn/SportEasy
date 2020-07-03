@@ -42,16 +42,13 @@ import java.util.Map;
 
 public class Home extends AppCompatActivity {
 
-   static JSONObject user_id;
-   LinearLayout bookedlist, availablelist, bookedE2;
-   TextView bookedmsg,text3,text5;
-   ImageView refreshButton;
-   Button optionE2;
-   Boolean booked, hasFine;
-   BookedResource userBookedData;
-
-
-
+    static JSONObject user_id;
+    LinearLayout bookedlist, availablelist, bookedE2;
+    TextView bookedmsg, text3, text5;
+    ImageView refreshButton;
+    Button optionE2;
+    Boolean booked, hasFine;
+    BookedResource userBookedData;
 
 
     @Override
@@ -72,11 +69,11 @@ public class Home extends AppCompatActivity {
                         return true;
                     case R.id.history:
                         startActivity(new Intent(getApplicationContext(), History.class));
-                        overridePendingTransition(0,0);
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.account:
                         startActivity(new Intent(getApplicationContext(), Account.class));
-                        overridePendingTransition(0,0);
+                        overridePendingTransition(0, 0);
                         return true;
                 }
                 return false;
@@ -91,44 +88,54 @@ public class Home extends AppCompatActivity {
         text5 = (TextView) findViewById(R.id.textView5);
         optionE2 = (Button) findViewById(R.id.optionE2);
         refreshButton = (ImageView) findViewById(R.id.refreshButton);
-        user_id= new JSONObject();
+        user_id = new JSONObject();
 
         try {
-            user_id.put("id",LoginActivity.sroll);
+            user_id.put("id", LoginActivity.sroll);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-//        SimpleDateFormat sd = new SimpleDateFormat("HH:mm:ss");
-//        String time = sd.format(new Date());
-//        if ((("11:40:00".compareTo(time)) < 0) && (("15:00:00".compareTo(time)) >0)) {
-//
-//            TodayBookingData();
-//
-//        }
-//        else {
-//            text5.setText("");
-//            text3.setText("");
-//            bookedmsg.setText("Bookings available from 11:40 AM to 03:00 PM only");
-//            bookedmsg.setTextSize(18);
-//        }
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TodayBookingData();
-            }
-        });
+        SimpleDateFormat sd = new SimpleDateFormat("HH:mm:ss");
+        String time = sd.format(new Date());
+        if ((("11:40:00".compareTo(time)) < 0) && (("15:00:00".compareTo(time)) >0)) {
 
-        TodayBookingData();
+            refreshButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TodayBookingData();
+                }
+            });
+            TodayBookingData();
+
+        }
+        else {
+            text5.setText("");
+            text3.setText("");
+            bookedmsg.setText("Bookings available from 11:40 AM to 03:00 PM only");
+            bookedmsg.setTextSize(18);
+            refreshButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    GetUserData();
+                }
+            });
+            }
+//        refreshButton.setOnClickListener(new View.OnClickListener()
+//
+//    {
+//        @Override
+//        public void onClick (View v){
+//        TodayBookingData();
+//    }
+//    });
+//
+//    TodayBookingData();
+
 
 
         bookedE2.setVisibility(View.INVISIBLE);
-
-
-
-
-
-
+        GetUserData();
 
     }
 
@@ -164,11 +171,13 @@ public class Home extends AppCompatActivity {
                         else if (userBookedData.getStatus()==1){
                             bookedE2.setVisibility(View.INVISIBLE);
                             bookedmsg.setText("You have already booked a resource !");
+                            bookedmsg.setTextSize(17);
                         }
                         if (availablelist.getChildCount()>0){
                             availablelist.removeAllViews();
                         }
                         DisplayResources();
+                        GetUserData();
 
 
 
@@ -189,6 +198,7 @@ public class Home extends AppCompatActivity {
                             availablelist.removeAllViews();
                         }
                         DisplayResources();
+                        GetUserData();
 
 
                     }
@@ -207,6 +217,50 @@ public class Home extends AppCompatActivity {
             }
         };
         queueB.add(objectRequest_bookingLog);
+    }
+
+    private void GetUserData() {
+        RequestQueue uqueue;
+        uqueue = Volley.newRequestQueue(this);
+        String URLQ = "https://sport-resources-booking-api.herokuapp.com/users";
+        JSONObject uid = new JSONObject();
+        try {
+            uid.put("id",LoginActivity.sroll);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest urequest = new JsonObjectRequest(Request.Method.POST,
+                URLQ,
+                uid,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        LoginActivity.userData = response;
+                        //openActivity2();
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //Toast.makeText(LoginActivity.this, "Failed to login contact administrator", Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer " + LoginActivity.accessTkn);
+                return params;
+            }
+            @Override
+            public Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", LoginActivity.sroll);
+                return params;
+            }
+        };
+        uqueue.add(urequest);
     }
 
     private void cancel() {
@@ -375,7 +429,7 @@ public class Home extends AppCompatActivity {
     private void ShowAlert(int i) {
         if (i ==1) {
             AlertDialog.Builder builder = new AlertDialog.Builder(Home.this);
-            builder.setMessage("You have a booking today");
+            builder.setMessage("You either did not return a resource or have a booking today.");
             builder.setTitle("Booking Failed");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -383,6 +437,7 @@ public class Home extends AppCompatActivity {
 
                 }
             });
+
             AlertDialog bookingFailDialog = builder.create();
             bookingFailDialog.show();
 
@@ -406,7 +461,7 @@ public class Home extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         final String date = sdf.format(new Date());
         SimpleDateFormat sd = new SimpleDateFormat("HH:mm:ss");
-        String time = sd.format(new Date());
+        final String time = sd.format(new Date());
 
         RequestQueue Bqueue;
         Bqueue = Volley.newRequestQueue(this);
@@ -417,7 +472,7 @@ public class Home extends AppCompatActivity {
             bdata.put("id", sroll);
             bdata.put("name", resourceName);
             bdata.put("day",date);
-            bdata.put("reservation_time", "12:10:00");
+            bdata.put("reservation_time", time);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -452,7 +507,7 @@ public class Home extends AppCompatActivity {
                 params.put("id", LoginActivity.sroll);
                 params.put("name", resourceName);
                 params.put("day", date);
-                params.put("reservation_time","12:10:00");
+                params.put("reservation_time",time);
                 return params;
             }
 
